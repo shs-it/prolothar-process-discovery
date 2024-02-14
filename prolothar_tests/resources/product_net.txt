@@ -1,0 +1,104 @@
+digraph {
+	place_start [label=1 shape=circle xlabel=start]
+	place_choice [label="" shape=circle xlabel=""]
+	place_repeat [label="" shape=circle xlabel=""]
+	place_end [label="" shape=circle xlabel=end]
+	place_event_net_place_0 [label=1 shape=circle xlabel=""]
+	place_event_net_place_1 [label="" shape=circle xlabel=""]
+	place_event_net_place_2 [label="" shape=circle xlabel=""]
+	place_event_net_place_3 [label="" shape=circle xlabel=""]
+	place_event_net_place_4 [label="" shape=circle xlabel=""]
+	place_event_net_place_5 [label="" shape=circle xlabel=""]
+	place_event_net_place_6 [label="" shape=circle xlabel=""]
+	place_event_net_place_7 [label="" shape=circle xlabel=""]
+	place_event_net_place_8 [label="" shape=circle xlabel=""]
+	place_event_net_place_9 [label="" shape=circle xlabel=""]
+	"transition_start computer" [label="start computer" shape=rectangle]
+	place_start -> "transition_start computer"
+	"transition_start computer" -> place_choice
+	"transition_drink coffee" [label="drink coffee" shape=rectangle]
+	place_choice -> "transition_drink coffee"
+	"transition_drink coffee" -> place_repeat
+	transition_program [label=program shape=rectangle]
+	place_choice -> transition_program
+	transition_program -> place_repeat
+	"transition_visit meeting" [label="visit meeting" shape=rectangle]
+	place_choice -> "transition_visit meeting"
+	"transition_visit meeting" -> place_repeat
+	"transition_eat lunch" [label="eat lunch" shape=rectangle]
+	place_choice -> "transition_eat lunch"
+	"transition_eat lunch" -> place_repeat
+	"transition_shutdown computer" [label="shutdown computer" shape=rectangle]
+	place_repeat -> "transition_shutdown computer"
+	"transition_shutdown computer" -> place_end
+	transition_repeat [label=repeat fillcolor=black shape=rectangle style=filled]
+	place_repeat -> transition_repeat
+	transition_repeat -> place_choice
+	"transition_event_net_start computer_1" [label="start computer" shape=rectangle]
+	place_event_net_place_0 -> "transition_event_net_start computer_1"
+	"transition_event_net_start computer_1" -> place_event_net_place_1
+	transition_event_net_program_2 [label=program shape=rectangle]
+	place_event_net_place_1 -> transition_event_net_program_2
+	transition_event_net_program_2 -> place_event_net_place_2
+	"transition_event_net_visit meeting_3" [label="visit meeting" shape=rectangle]
+	place_event_net_place_2 -> "transition_event_net_visit meeting_3"
+	"transition_event_net_visit meeting_3" -> place_event_net_place_3
+	"transition_event_net_drink coffee_4" [label="drink coffee" shape=rectangle]
+	place_event_net_place_3 -> "transition_event_net_drink coffee_4"
+	"transition_event_net_drink coffee_4" -> place_event_net_place_4
+	"transition_event_net_eat lunch_5" [label="eat lunch" shape=rectangle]
+	place_event_net_place_4 -> "transition_event_net_eat lunch_5"
+	"transition_event_net_eat lunch_5" -> place_event_net_place_5
+	transition_event_net_program_6 [label=program shape=rectangle]
+	place_event_net_place_5 -> transition_event_net_program_6
+	transition_event_net_program_6 -> place_event_net_place_6
+	transition_event_net_program_7 [label=program shape=rectangle]
+	place_event_net_place_6 -> transition_event_net_program_7
+	transition_event_net_program_7 -> place_event_net_place_7
+	transition_event_net_test_8 [label=test shape=rectangle]
+	place_event_net_place_7 -> transition_event_net_test_8
+	transition_event_net_test_8 -> place_event_net_place_8
+	"transition_event_net_shutdown computer_9" [label="shutdown computer" shape=rectangle]
+	place_event_net_place_8 -> "transition_event_net_shutdown computer_9"
+	"transition_event_net_shutdown computer_9" -> place_event_net_place_9
+	"transition_event_net_sync_event_net_start computer_1" [label="start computer" shape=rectangle]
+	place_event_net_place_0 -> "transition_event_net_sync_event_net_start computer_1"
+	place_start -> "transition_event_net_sync_event_net_start computer_1"
+	"transition_event_net_sync_event_net_start computer_1" -> place_event_net_place_1
+	"transition_event_net_sync_event_net_start computer_1" -> place_choice
+	transition_event_net_sync_event_net_program_2 [label=program shape=rectangle]
+	place_event_net_place_1 -> transition_event_net_sync_event_net_program_2
+	place_choice -> transition_event_net_sync_event_net_program_2
+	transition_event_net_sync_event_net_program_2 -> place_event_net_place_2
+	transition_event_net_sync_event_net_program_2 -> place_repeat
+	"transition_event_net_sync_event_net_visit meeting_3" [label="visit meeting" shape=rectangle]
+	place_event_net_place_2 -> "transition_event_net_sync_event_net_visit meeting_3"
+	place_choice -> "transition_event_net_sync_event_net_visit meeting_3"
+	"transition_event_net_sync_event_net_visit meeting_3" -> place_repeat
+	"transition_event_net_sync_event_net_visit meeting_3" -> place_event_net_place_3
+	"transition_event_net_sync_event_net_drink coffee_4" [label="drink coffee" shape=rectangle]
+	place_choice -> "transition_event_net_sync_event_net_drink coffee_4"
+	place_event_net_place_3 -> "transition_event_net_sync_event_net_drink coffee_4"
+	"transition_event_net_sync_event_net_drink coffee_4" -> place_event_net_place_4
+	"transition_event_net_sync_event_net_drink coffee_4" -> place_repeat
+	"transition_event_net_sync_event_net_eat lunch_5" [label="eat lunch" shape=rectangle]
+	place_event_net_place_4 -> "transition_event_net_sync_event_net_eat lunch_5"
+	place_choice -> "transition_event_net_sync_event_net_eat lunch_5"
+	"transition_event_net_sync_event_net_eat lunch_5" -> place_event_net_place_5
+	"transition_event_net_sync_event_net_eat lunch_5" -> place_repeat
+	transition_event_net_sync_event_net_program_6 [label=program shape=rectangle]
+	place_event_net_place_5 -> transition_event_net_sync_event_net_program_6
+	place_choice -> transition_event_net_sync_event_net_program_6
+	transition_event_net_sync_event_net_program_6 -> place_event_net_place_6
+	transition_event_net_sync_event_net_program_6 -> place_repeat
+	transition_event_net_sync_event_net_program_7 [label=program shape=rectangle]
+	place_event_net_place_6 -> transition_event_net_sync_event_net_program_7
+	place_choice -> transition_event_net_sync_event_net_program_7
+	transition_event_net_sync_event_net_program_7 -> place_event_net_place_7
+	transition_event_net_sync_event_net_program_7 -> place_repeat
+	"transition_event_net_sync_event_net_shutdown computer_9" [label="shutdown computer" shape=rectangle]
+	place_event_net_place_8 -> "transition_event_net_sync_event_net_shutdown computer_9"
+	place_repeat -> "transition_event_net_sync_event_net_shutdown computer_9"
+	"transition_event_net_sync_event_net_shutdown computer_9" -> place_end
+	"transition_event_net_sync_event_net_shutdown computer_9" -> place_event_net_place_9
+}

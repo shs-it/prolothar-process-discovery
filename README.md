@@ -7,9 +7,6 @@ Based on the publication
 > **Mining easily understandable models from complex event logs.**
 > In: *Proceedings of the SIAM International Conference on Data Mining (SDM), Virtual Event.* 2021, pp. 244-252.
 
-> [!IMPORTANT]
-> We currently prepare the code for publishing.
-
 ## Prerequisites
 
 Python 3.11+
@@ -83,7 +80,9 @@ pattern_graph.plot(filepath='path/to/your/file', filetype: str='pdf', view=False
 ## Development
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-See deployment for notes on how to deploy the project on a live system.
+
+### Additional Prerequisites
+- make (optional)
 
 ### Running the tests
 
@@ -93,8 +92,9 @@ make test
 
 ### Deployment
 
-When changes are pushed into the master branch, the project is bundled and
-uploaded to PyPi automatically.
+```bash
+make clean_package || make package && make publish
+```
 
 ## Versioning
 

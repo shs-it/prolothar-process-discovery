@@ -1,0 +1,2 @@
+from prolothar_process_discovery.discovery.proseqo.dfg_abstraction.proseqo import Proseqo
+from prolothar_process_discovery.discovery.proseqo.dfg_abstraction.prosimple import ProSimple

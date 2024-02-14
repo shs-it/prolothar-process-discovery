@@ -1,0 +1,6 @@
+coverage
+mypy
+Cython
+twine
+scipy
+build
