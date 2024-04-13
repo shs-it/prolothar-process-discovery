@@ -66,8 +66,9 @@ eventlog.add_trace(Trace(0, [
 ```python
 from prolothar_process_discovery.discovery import Proseqo
 from prolothar_process_discovery.discovery import ProSimple
+from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 
-directly_follows_graph = PatternGraph.create_from_event_log(eventlog)
+directly_follows_graph = PatternDfg.create_from_event_log(eventlog)
 
 pattern_graph = Proseqo().mine_dfg(eventlog, directly_follows_graph, verbose=True)
 pattern_graph.plot()
@@ -92,8 +93,16 @@ make test
 
 ### Deployment
 
+1. Change the version in version.txt
+2. Build and publish the package on pypi by
 ```bash
-make clean_package || make package && make publish
+make clean_package
+make package && make publish
+```
+3. Create and push a tag for this version by
+```bash
+git tag -a [version] -m "describe this version"
+git push --tags
 ```
 
 ## Versioning
