@@ -4,6 +4,7 @@ dist
 *.exe
 *.o
 *.egg-info
+*.so
 
 ### PYTHON ###
 __pycache__/
