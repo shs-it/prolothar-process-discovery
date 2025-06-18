@@ -15,8 +15,8 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph, Node
-
+from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
+from prolothar_common.models.dfg.node import Node
 import prolothar_common.mdl_utils as mdl_utils
 
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
@@ -79,7 +79,7 @@ def _compute_encoded_length_of_model(
 
 def _encode_patterns_of_nodes(
         data: DirectlyFollowsGraph, nodes: Iterable[Node]) -> float:
-    activity_set = set(data.nodes.keys())
+    activity_set = frozenset(data.nodes.keys())
     mdl_of_patterns = 0
     for node in nodes:
         mdl_of_patterns += log2(NR_OF_PATTERN_TYPES_WITH_SINGLETON)

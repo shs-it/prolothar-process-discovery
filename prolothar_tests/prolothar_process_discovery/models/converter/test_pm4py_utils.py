@@ -17,8 +17,8 @@
 
 import unittest
 
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.pt_operator import Operator as ProcessTreeOperator
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.process_tree.obj import Operator as ProcessTreeOperator
 
 from prolothar_process_discovery.thirdparty.pm4py_utils import convert_pm4py_process_tree_to_pdfg
 from prolothar_process_discovery.discovery.proseqo.pattern.sequence import Sequence

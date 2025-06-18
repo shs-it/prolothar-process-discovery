@@ -78,6 +78,14 @@ pattern_graph = ProSimple().mine_dfg(eventlog, directly_follows_graph, verbose=T
 pattern_graph.plot(filepath='path/to/your/file', filetype: str='pdf', view=False)
 ```
 
+If you get an error stating that parameter "last_covered_activity" is unexpectedly of type "None",
+add a common start and a common end activity to all traces:
+
+```python
+log.add_start_activity_to_every_trace('START')
+log.add_end_activity_to_every_trace('END')
+```
+
 ## Development
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.

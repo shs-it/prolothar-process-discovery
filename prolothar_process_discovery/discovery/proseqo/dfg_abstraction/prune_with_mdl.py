@@ -20,7 +20,8 @@ from typing import Union, Set, Tuple
 from prolothar_process_discovery.discovery.proseqo.dfg_abstraction.dfg_abstraction_strategy import DfgAbstractionStrategy
 
 from prolothar_common.models.eventlog import EventLog
-from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph, Edge
+from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
+from prolothar_common.models.dfg.edge import Edge
 from prolothar_process_discovery.discovery.proseqo.structural_dfg_patterns.isolated_sequences import find_isolated_sequences_in_dfg
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 from prolothar_process_discovery.discovery.proseqo.dfg_abstraction.candidates.edge_removal import CandidateEdgeRemoval

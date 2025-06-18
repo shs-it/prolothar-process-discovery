@@ -233,9 +233,9 @@ class TestGreedyCover(unittest.TestCase):
         community = SubGraph(community_pdfg, ['A'], ['D'])
 
         dfg_without_patterns = PatternDfg.create_from_event_log(log)
-        dfg_with_patterns = dfg_without_patterns.fold([
-                Sequence([community, Singleton('E')])
-        ])
+        dfg_with_patterns = dfg_without_patterns.fold({
+            Sequence([community, Singleton('E')])
+        })
 
         cover = compute_cover(log.traces, dfg_with_patterns)
         self.assertEqual(20, cover.move_stream.get_number_of_synchronous_moves())
@@ -429,11 +429,13 @@ class TestGreedyCover(unittest.TestCase):
             ['0','4','1','4','5','2','3']
         ])
 
-        sequence_1_2 = Sequence([Singleton('1'), Singleton('2')],
-                                special_noise_set={'4'})
+        sequence_1_2 = Sequence(
+            [Singleton('1'), Singleton('2')],
+            special_noise_set={'4'}
+        )
 
         dfg_with_patterns = PatternDfg.create_from_event_log(log)
-        dfg_with_patterns = dfg_with_patterns.fold([sequence_1_2])
+        dfg_with_patterns = dfg_with_patterns.fold({sequence_1_2})
 
         cover = compute_cover(log.traces, dfg_with_patterns)
 
@@ -497,7 +499,7 @@ class TestGreedyCover(unittest.TestCase):
 
         dfg = PatternDfg.create_from_event_log(log)
 
-        folded_dfg = dfg.fold([
+        folded_dfg = dfg.fold({
             Sequence([
                 Singleton('START'),
                 Choice([
@@ -505,7 +507,7 @@ class TestGreedyCover(unittest.TestCase):
                     Sequence.from_activity_list(['HWOE', 'HWOZ']),
                 ])
             ])
-        ])
+        })
 
         cover_dfg = compute_cover(log.traces, dfg)
         cover_folded_dfg = compute_cover(log.traces, folded_dfg)
@@ -518,10 +520,10 @@ class TestGreedyCover(unittest.TestCase):
         log = EventLog.create_from_simple_activity_log([
                 ['A','1','2','3','4','Z'],
         ])
-        pattern_dfg = PatternDfg.create_from_event_log(log).fold([
+        pattern_dfg = PatternDfg.create_from_event_log(log).fold({
                 Sequence.from_activity_list(['1', '2']),
                 Sequence.from_activity_list(['3', '4']),
-        ])
+        })
         log = EventLog.create_from_simple_activity_log([
                 ['A','Z'],
         ])

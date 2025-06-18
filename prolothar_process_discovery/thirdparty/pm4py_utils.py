@@ -15,8 +15,8 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from pm4py.objects.process_tree.process_tree import ProcessTree as Pm4PyProcessTree
-from pm4py.objects.process_tree.pt_operator import Operator as ProcessTreeOperator
+from pm4py.objects.process_tree.obj import ProcessTree as Pm4PyProcessTree
+from pm4py.objects.process_tree.obj import Operator as ProcessTreeOperator
 
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern

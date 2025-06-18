@@ -54,7 +54,7 @@ def find_sequence_candidates_in_dfg(dfg: DirectlyFollowsGraph) -> Set[Sequence]:
                     max_count = edge.count
                     max_count_edge = edge
             if not max_count_edge.is_self_loop():
-                if hasattr(node, 'pattern'):
+                if hasattr(node, 'pattern') and node.pattern is not None:
                     candidates.add(Sequence([
                         node.pattern, max_count_edge.end.pattern
                     ]))

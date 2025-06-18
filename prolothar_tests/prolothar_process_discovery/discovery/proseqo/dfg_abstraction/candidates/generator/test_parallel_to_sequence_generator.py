@@ -37,12 +37,12 @@ class TestParallelToSequenceGenerator(unittest.TestCase):
         ])
 
         dfg = PatternDfg.create_from_event_log(log)
-        dfg_with_parallel = dfg.fold([
+        dfg_with_parallel = dfg.fold({
             Parallel([
                 Singleton('1'),
                 Singleton('2')
             ])
-        ])
+        })
 
         sequence_1_2 = Sequence.from_activity_list(['1', '2'])
         sequence_2_1 = Sequence.from_activity_list(['2', '1'])

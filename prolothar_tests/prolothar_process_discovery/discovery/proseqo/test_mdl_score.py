@@ -60,11 +60,11 @@ class TestMdlScore(unittest.TestCase):
         dfg_with_missing_edges.add_count('7', '8')
         dfg_with_missing_edges.add_count('8', '6')
 
-        dfg_with_patterns = dfg_without_patterns.fold([
+        dfg_with_patterns = dfg_without_patterns.fold({
                 Sequence([Singleton('1'), Singleton('2')]),
                 Sequence([Singleton('4'), Singleton('5')]),
                 Sequence([Singleton('7'), Singleton('8')]),
-        ])
+        })
 
         dfg_with_bad_patterns = PatternDfg()
         dfg_with_bad_patterns.add_count('0', '[1,5]')
@@ -134,7 +134,7 @@ class TestMdlScore(unittest.TestCase):
         community.add_pattern('[3,5]', Sequence.from_activity_list(['3', '5']))
         community = SubGraph(community, ['2'], ['4'])
 
-        dfg_with_patterns = dfg_without_patterns.fold([community])
+        dfg_with_patterns = dfg_without_patterns.fold({community})
 
         compute_mdl_score(
                 log, dfg_with_patterns, verbose=False)
@@ -148,10 +148,11 @@ class TestMdlScore(unittest.TestCase):
 
         dfg_without_patterns = PatternDfg.create_from_event_log(log)
 
-        dfg_with_patterns = dfg_without_patterns.fold([Sequence([
-                Singleton('0'), Singleton('1'), Singleton('2'),
-                Optional(Sequence.from_activity_list(['3', '5']))]),
-                Singleton('4'), Singleton('6'), Singleton('7')])
+        dfg_with_patterns = dfg_without_patterns.fold({Sequence([
+            Singleton('0'), Singleton('1'), Singleton('2'),
+            Optional(Sequence.from_activity_list(['3', '5']))]),
+            Singleton('4'), Singleton('6'), Singleton('7')
+        })
 
         mdl_score_without_patterns = compute_mdl_score(
                 log, dfg_without_patterns, verbose=False)
@@ -172,8 +173,9 @@ class TestMdlScore(unittest.TestCase):
 
         dfg_without_patterns = PatternDfg.create_from_event_log(log)
 
-        dfg_with_patterns = dfg_without_patterns.fold([
-                Optional(Singleton('1'))])
+        dfg_with_patterns = dfg_without_patterns.fold({
+            Optional(Singleton('1'))
+        })
 
         mdl_score_without_patterns = compute_mdl_score(
                 log, dfg_without_patterns, verbose=False)
@@ -186,7 +188,7 @@ class TestMdlScore(unittest.TestCase):
         dfg.add_count('A', 'B')
         dfg.add_count('B', 'B')
         dfg.add_count('B', 'C')
-        folded_dfg = dfg.fold([Loop(Singleton('B'))])
+        folded_dfg = dfg.fold({Loop(Singleton('B'))})
 
         simple_activity_log = []
         for _ in range(50):
@@ -210,7 +212,7 @@ class TestMdlScore(unittest.TestCase):
         dfg.add_count('A', '1')
         dfg.add_count('C', '1')
 
-        folded_dfg = dfg.fold([Parallel.from_activity_list(['A','B','C'])])
+        folded_dfg = dfg.fold({Parallel.from_activity_list(['A','B','C'])})
 
         simple_activity_log = []
         for _ in range(10):
@@ -232,13 +234,13 @@ class TestMdlScore(unittest.TestCase):
 
         mdl_complete_dfg = compute_mdl_score(log, dfg, verbose=False)
 
-        good_model = dfg.fold([Sequence([
+        good_model = dfg.fold({Sequence([
                 Singleton('Take out of the Oven'),
                 Optional(Singleton('Sprinkle with Icing Sugar')),
                 Singleton('Eat'),
                 Singleton('Smile'),
                 Singleton('End')])
-        ])
+        })
         mdl_good_model = compute_mdl_score(log, good_model, verbose=False)
 
         optimal_model = baking.get_ideal_pattern_graph_with_clustering(log)
@@ -264,10 +266,10 @@ class TestMdlScore(unittest.TestCase):
 
         dfg_without_patterns = PatternDfg.create_from_event_log(log)
 
-        dfg_with_patterns = dfg_without_patterns.fold([Sequence([
+        dfg_with_patterns = dfg_without_patterns.fold({Sequence([
                 Choice([Singleton('A1'), Singleton('A2')]),
                 Choice([Singleton('B1'), Singleton('B2'), Singleton('B3')])
-            ])])
+            ])})
 
         mdl_score_without_patterns = compute_mdl_score(
                 log, dfg_without_patterns, verbose=False)
@@ -295,7 +297,7 @@ class TestMdlScore(unittest.TestCase):
         cluster3 = Sequence.from_activity_list(['2', '3'])
         cluster_pattern = Clustering([cluster1, cluster2, cluster3],
                                      trace_cluster_dict)
-        folded_dfg = dfg_without_patterns.fold([cluster_pattern])
+        folded_dfg = dfg_without_patterns.fold({cluster_pattern})
 
         mdl_score_without_patterns = compute_mdl_score(
                 log, dfg_without_patterns, verbose=False)
@@ -311,7 +313,7 @@ class TestMdlScore(unittest.TestCase):
 
         dfg = PatternDfg.create_from_event_log(log)
 
-        pdfg = dfg.fold([Sequence.from_activity_list(['A', 'B'])])
+        pdfg = dfg.fold({Sequence.from_activity_list(['A', 'B'])})
 
         dfg_mdl = compute_mdl_score(log, dfg, verbose=False)
 
@@ -328,7 +330,7 @@ class TestMdlScore(unittest.TestCase):
 
         dfg = PatternDfg.create_from_event_log(log)
 
-        pdfg = dfg.fold([Choice([Singleton('B'), Singleton('C')])])
+        pdfg = dfg.fold({Choice([Singleton('B'), Singleton('C')])})
 
         dfg_mdl = compute_mdl_score(log, dfg, verbose=False)
         pdfg_mdl = compute_mdl_score(log, pdfg, verbose=False)
@@ -344,13 +346,13 @@ class TestMdlScore(unittest.TestCase):
 
         dfg = PatternDfg.create_from_event_log(log)
 
-        dfg_with_sequences = dfg.fold([Sequence.from_activity_list(['B1', 'B2']),
-                                       Sequence.from_activity_list(['C1', 'C2'])])
+        dfg_with_sequences = dfg.fold({Sequence.from_activity_list(['B1', 'B2']),
+                                       Sequence.from_activity_list(['C1', 'C2'])})
 
-        dfg_with_choice = dfg_with_sequences.fold([Choice([
+        dfg_with_choice = dfg_with_sequences.fold({Choice([
                 Sequence.from_activity_list(['B1', 'B2']),
                 Sequence.from_activity_list(['C1', 'C2'])
-        ])])
+        ])})
 
         dfg_mdl = compute_mdl_score(log, dfg, verbose=False)
         dfg_with_sequences_mdl = compute_mdl_score(log, dfg_with_sequences, verbose=False)
@@ -368,13 +370,13 @@ class TestMdlScore(unittest.TestCase):
         for i,trace in enumerate(log.traces):
             trace_cluster_dict[trace] = i % 2
 
-        dfg_without_clustering = PatternDfg.create_from_event_log(log).fold([
-                Sequence.from_activity_list(['1', '2'])])
+        dfg_without_clustering = PatternDfg.create_from_event_log(log).fold({
+                Sequence.from_activity_list(['1', '2'])})
 
         cluster1 = Sequence.from_activity_list(['1', '2'])
         cluster2 = Sequence.from_activity_list(['1', '2'])
         cluster_pattern = Clustering([cluster1, cluster2], trace_cluster_dict)
-        folded_dfg = PatternDfg.create_from_event_log(log).fold([cluster_pattern])
+        folded_dfg = PatternDfg.create_from_event_log(log).fold({cluster_pattern})
 
         mdl_score_without_patterns = compute_mdl_score(
                 log, dfg_without_clustering, verbose=False)
@@ -393,17 +395,17 @@ class TestMdlScore(unittest.TestCase):
         dfg = PatternDfg.create_from_event_log(log)
         dfg_mdl = compute_mdl_score(log, dfg, verbose=False)
 
-        dfg_choice_of_sequences = dfg.fold([
+        dfg_choice_of_sequences = dfg.fold({
                 Choice([Sequence.from_activity_list(['A', 'B']),
                         Sequence.from_activity_list(['C', 'D'])])
-        ])
+        })
         dfg_choice_of_sequences_mdl = compute_mdl_score(
                 log, dfg_choice_of_sequences, verbose=False)
 
-        dfg_sequence_of_choices = dfg.fold([
+        dfg_sequence_of_choices = dfg.fold({
                 Sequence([Choice([Singleton('A'), Singleton('B')]),
                           Choice([Singleton('C'), Singleton('D')])])
-        ])
+        })
         dfg_sequence_of_choices_mdl = compute_mdl_score(
                 log, dfg_sequence_of_choices)
 
@@ -446,9 +448,9 @@ class TestMdlScore(unittest.TestCase):
 
         mdl_dfg = compute_mdl_score(log, dfg, verbose=False)
 
-        dfg_with_blob = dfg.fold([
+        dfg_with_blob = dfg.fold({
             Blob({'g', 'h', 'k', 'l'})
-        ])
+        })
         mdl_with_blob = compute_mdl_score(log, dfg_with_blob, verbose=False)
 
         self.assertLess(mdl_with_blob, mdl_dfg)
@@ -472,7 +474,7 @@ class TestMdlScore(unittest.TestCase):
                                   Singleton('C'),
                                   Singleton('D')])
 
-        dfg_with_choice = dfg.fold([choice])
+        dfg_with_choice = dfg.fold({choice})
         mdl_with_choice = compute_mdl_score(log, dfg_with_choice, verbose=False)
 
         self.assertLess(mdl_with_choice, mdl_dfg)
@@ -801,9 +803,9 @@ class TestMdlScore(unittest.TestCase):
         dfg = PatternDfg.create_from_event_log(log)
         cleaned_dfg = dfg.copy()
         cleaned_dfg.remove_edge(('START', 'END'))
-        optional_dfg = dfg.fold([
+        optional_dfg = dfg.fold({
             Optional(Singleton('a'))
-        ])
+        })
 
         mdl_dfg = compute_mdl_score(log, dfg, verbose=False)
         mdl_cleaned_dfg = compute_mdl_score(log, cleaned_dfg,

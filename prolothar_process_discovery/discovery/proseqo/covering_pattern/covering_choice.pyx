@@ -14,28 +14,28 @@
     You should have received a copy of the GNU General Public License
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
-from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern
+from prolothar_common.models.eventlog.trace cimport Trace
+from prolothar_process_discovery.discovery.proseqo.pattern.pattern cimport Pattern
 from prolothar_process_discovery.discovery.proseqo.covering_pattern.covering_pattern cimport CoveringPattern
-
-from typing import Set
+from prolothar_process_discovery.discovery.proseqo.cover cimport Cover
 
 cdef class CoveringChoice(CoveringPattern):
 
-    def __init__(self, choice: Pattern, trace, str last_covered_activity):
+    def __init__(self, Pattern choice, Trace trace, str last_covered_activity):
         super().__init__(choice, trace, last_covered_activity)
         self.current_subpattern_covering = None
 
-    cpdef process_covering_step(self, object cover, str last_activity, str next_activity):
+    cpdef process_covering_step(self, Cover cover, str last_activity, str next_activity):
         cdef frozenset set_of_subpattern_names
         if not self.started_covering:
             self.started_covering = True
             set_of_subpattern_names = self.__get_set_of_subpattern_names()
             for option in self.pattern.options:
-                if option.contains_activity(next_activity):
-                    self.current_subpattern_covering = option.for_covering(
+                if (<Pattern>option).contains_activity(next_activity):
+                    self.current_subpattern_covering = (<Pattern>option).for_covering(
                             self.trace, last_activity)
                     cover.meta_stream.add_routing_code(
-                            self.pattern, option.get_activity_name(),
+                            self.pattern, (<Pattern>option),
                             set_of_subpattern_names,
                             last_activity)
                     break
@@ -64,13 +64,13 @@ cdef class CoveringChoice(CoveringPattern):
             for subpattern in self.pattern.get_subpatterns()
         )
 
-    cpdef int skip_to_end(self, object cover, object trace, str last_covered_activity):
+    cpdef int skip_to_end(self, Cover cover, Trace trace, str last_covered_activity):
         self.completed_covering = True
         if self.current_subpattern_covering is not None:
             return self.current_subpattern_covering.skip_to_end(
                     cover, trace, last_covered_activity)
         else:
-            return self.pattern.get_subpatterns()[0].for_covering(
+            return (<Pattern>self.pattern.get_subpatterns()[0]).for_covering(
                     trace, last_covered_activity).skip_to_end(
                             cover, trace, last_covered_activity)
 

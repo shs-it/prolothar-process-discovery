@@ -37,7 +37,7 @@ class BlobCandidateGenerator(PatternCandidateGenerator):
 
         for candidate in list(candidates):
             try:
-                candidate_dfg = pattern_dfg.fold([candidate])
+                candidate_dfg = pattern_dfg.fold({candidate})
                 induced_choice = find_one_step_choice_from_branch_candidate_node(
                         candidate_dfg, candidate_dfg.nodes[candidate.get_activity_name()])
                 if induced_choice is not None:

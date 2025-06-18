@@ -21,7 +21,8 @@ from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Patter
 from prolothar_process_discovery.discovery.proseqo.pattern.singleton import Singleton
 from prolothar_process_discovery.discovery.proseqo.covering_pattern.covering_blob import CoveringBlob
 
-from prolothar_common.models.directly_follows_graph import Node
+from prolothar_common.models.dfg.node import Node
+
 from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
 from prolothar_common.models.data_petri_net import DataPetriNet, Transition, Place
 from prolothar_common.models.nested_graph import NestedGraph

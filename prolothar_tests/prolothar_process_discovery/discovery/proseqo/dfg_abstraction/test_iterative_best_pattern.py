@@ -173,6 +173,6 @@ class TestIterativeBestPattern(unittest.TestCase):
         self.assertEqual(
                 '[a,b,c,(d|{g,h,k,l}),e,f]',
                 list(pattern_dfg.get_nodes())[0].activity)
-
+        
 if __name__ == '__main__':
     unittest.main()

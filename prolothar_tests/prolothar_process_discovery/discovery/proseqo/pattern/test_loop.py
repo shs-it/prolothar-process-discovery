@@ -49,7 +49,7 @@ class TestLoop(unittest.TestCase):
         dfg.add_count('B', 'B')
         dfg.add_count('B', 'C', count=3)
 
-        folded_dfg = dfg.fold([Loop(Singleton('B'))])
+        folded_dfg = dfg.fold({Loop(Singleton('B'))])
 
         expected_folded_dfg = PatternDfg()
         expected_folded_dfg.add_count('A', 'B+', count=2)
@@ -72,7 +72,7 @@ class TestLoop(unittest.TestCase):
         dfg.add_count('C', 'B')
         dfg.add_count('C', 'D')
 
-        folded_dfg = dfg.fold([Loop(Sequence.from_activity_list(['B', 'C']))])
+        folded_dfg = dfg.fold({Loop(Sequence.from_activity_list(['B', 'C']))])
 
         expected_folded_dfg = PatternDfg()
         expected_folded_dfg.add_count('A', '[B,C]+')

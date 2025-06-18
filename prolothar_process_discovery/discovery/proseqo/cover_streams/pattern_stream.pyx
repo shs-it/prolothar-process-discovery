@@ -14,20 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
-from prolothar_process_discovery.discovery.proseqo.pattern_dfg import Pattern
-from typing import List, Dict, Tuple, FrozenSet
-from prolothar_common import mdl_utils
+from prolothar_process_discovery.discovery.proseqo.pattern.pattern cimport Pattern
+from typing import List, Dict, FrozenSet
+from prolothar_common cimport mdl_utils
 
 cdef class PatternStream:
     """pattern stream of cover, i.e. a stream of patterns that is used to
     cover (= encode) a set of sequences"""
-
-    cdef dict _usage_per_pattern_conditional
-    cdef bint _store_patterns
-    cdef list _pattern_sequence
-    cdef dict __pattern_sequence_cache
-    cdef list __current_trace_cache
-    cdef tuple __current_trace
 
     def __init__(self, store_patterns=False):
         """creates a new pattern stream.
@@ -58,12 +51,12 @@ cdef class PatternStream:
         for context, pattern_usage_dict in self._usage_per_pattern_conditional.items():
             copy_of_pattern_usage_dict = {}
             copy._usage_per_pattern_conditional[context] = copy_of_pattern_usage_dict
-            for pattern, usage in pattern_usage_dict.items():
+            for pattern, usage in (<dict>pattern_usage_dict).items():
                 copy_of_pattern_usage_dict[pattern] = usage
         return copy
 
-    def add(self, pattern: Pattern, frozenset usable_pattern_activities,
-            add_to_cache: bool = True, count: int = 1):
+    cpdef add(self, Pattern pattern, frozenset usable_pattern_activities,
+            bint add_to_cache = True, int count = 1):
         """adds a pattern code to this stream
         Args:
             pattern:
@@ -91,29 +84,29 @@ cdef class PatternStream:
             self._usage_per_pattern_conditional[usable_pattern_activities] = usage_per_pattern
         usage_per_pattern[pattern.get_activity_name()] += count
 
-    def remove(self, pattern: Pattern, frozenset usable_pattern_activities,
-               count: int = 1):
+    cpdef remove(self, Pattern pattern, frozenset usable_pattern_activities,
+                 int count = 1):
         """removes counts from this pattern stream"""
         self._usage_per_pattern_conditional[
                 frozenset(usable_pattern_activities)][
                         pattern.get_activity_name()] -= count
 
-    def remove_pattern_from_context(
-            self, frozenset context, pattern: Pattern):
-        pattern_count_dict = self._usage_per_pattern_conditional.pop(context)
+    cpdef remove_pattern_from_context(
+            self, frozenset context, Pattern pattern):
+        cdef dict pattern_count_dict = self._usage_per_pattern_conditional.pop(context)
         pattern_count_dict.pop(pattern.get_activity_name())
         new_context = context.difference([pattern.get_activity_name()])
         self._usage_per_pattern_conditional[new_context] = pattern_count_dict
 
-    def get_code_length(self, verbose=False) -> float:
+    cpdef float get_code_length(self, bint verbose=False):
         """
         Returns:
             the encoded length of this pattern stream
         """
-        code_length = 0.0
+        cdef float code_length = 0.0
 
         for pattern_counter in self._usage_per_pattern_conditional.values():
-            code_length += mdl_utils.prequential_coding_length(pattern_counter)
+            code_length += mdl_utils.prequential_coding_length(<dict>pattern_counter)
 
         if verbose:
             print('encoded length of pattern stream: %.2f' % code_length)
@@ -152,19 +145,19 @@ cdef class PatternStream:
         """
         return self._usage_per_pattern_conditional
 
-    def start_trace_covering(self, trace: Tuple[str]):
+    cpdef start_trace_covering(self, tuple trace):
         """signal that now the given trace starts to get covered"""
         self.__current_trace = trace
         self.__current_trace_cache = []
         self.__pattern_sequence_cache[self.__current_trace] = self.__current_trace_cache
 
-    def end_trace_covering(self, trace: Tuple[str]):
+    cpdef end_trace_covering(self, tuple trace):
         """signal that now the given trace is get covered"""
         self.__current_trace = None
         self.__current_trace_cache = None
 
-    def use_cache_to_cover_trace(self, trace: Tuple[str]):
+    cpdef use_cache_to_cover_trace(self, tuple trace):
         """repeats the addition of codes as it is stored in a cache for the
         same sequence of activities as the given trace"""
         for pattern, usable_pattern_activities in self.__pattern_sequence_cache[trace]:
-            self.add(pattern, usable_pattern_activities, add_to_cache=False)
+            self.add(<Pattern>pattern, <frozenset>usable_pattern_activities, add_to_cache=False)

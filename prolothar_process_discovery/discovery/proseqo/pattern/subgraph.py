@@ -18,7 +18,8 @@
 from prolothar_common.models.eventlog import EventLog, Trace
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern
-from prolothar_common.models.directly_follows_graph import Node
+from prolothar_common.models.dfg.node import Node
+
 from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import NR_OF_PATTERN_TYPES_WITH_SINGLETON
 from prolothar_common.models.nested_graph import NestedGraph

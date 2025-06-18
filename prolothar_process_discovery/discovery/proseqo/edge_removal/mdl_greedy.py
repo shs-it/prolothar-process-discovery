@@ -18,7 +18,8 @@
 from typing import List, Tuple
 
 from prolothar_common.models.eventlog import EventLog
-from prolothar_common.models.directly_follows_graph import Edge
+from prolothar_common.models.dfg.edge import Edge
+
 
 from prolothar_process_discovery.discovery.proseqo.edge_removal.edge_removal_strategy import EdgeRemovalStrategy
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg

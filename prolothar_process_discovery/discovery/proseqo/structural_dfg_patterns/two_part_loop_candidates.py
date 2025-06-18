@@ -20,9 +20,9 @@ from typing import List
 from prolothar_process_discovery.discovery.proseqo.pattern.loop import Loop
 from prolothar_process_discovery.discovery.proseqo.pattern.optional import Optional
 from prolothar_process_discovery.discovery.proseqo.pattern.sequence import Sequence
-
-from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg, Node
+from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
+from prolothar_common.models.dfg.node import Node
 
 def find_two_part_loop_candidates_in_dfg(dfg: DirectlyFollowsGraph) -> List[Loop]:
     """finds pattern candidates of the form "[a,b?]+"

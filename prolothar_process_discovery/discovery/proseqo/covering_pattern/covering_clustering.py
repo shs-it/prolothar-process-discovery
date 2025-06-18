@@ -59,5 +59,4 @@ class CoveringClustering(CoveringPattern):
             return self.covering_subpattern.can_cover(activity)
         else:
             cluster_index = self.pattern.trace_to_community_index_dict[self.trace]
-            self.pattern.get_subpatterns()[
-                    cluster_index].contains_activity(activity)
+            return self.pattern.get_subpatterns()[cluster_index].contains_activity(activity)

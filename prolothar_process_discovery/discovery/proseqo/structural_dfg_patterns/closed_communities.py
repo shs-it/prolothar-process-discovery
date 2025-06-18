@@ -15,7 +15,8 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph, Node
+from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
+from prolothar_common.models.dfg.node import Node
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 from prolothar_process_discovery.discovery.proseqo.pattern.subgraph import SubGraph
 from typing import Set

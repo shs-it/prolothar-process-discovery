@@ -15,6 +15,7 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 from prolothar_process_discovery.discovery.proseqo.covering_pattern.covering_pattern cimport CoveringPattern
+from prolothar_process_discovery.discovery.proseqo.cover cimport Cover
 
 cdef class CoveringSubGraph(CoveringPattern):
 
@@ -22,7 +23,7 @@ cdef class CoveringSubGraph(CoveringPattern):
     cdef CoveringPattern covering_subpattern
     cdef str _skip_preceding_activity
 
-    cdef _start_covering(self, object cover, str last_activity, str next_activity)
+    cdef _start_covering(self, Cover cover, str last_activity, str next_activity)
     cdef frozenset __get_set_of_subpattern_names(self)
-    cdef _skip_activities(self, object cover, str preceding_activity,
+    cdef _skip_activities(self, Cover cover, str preceding_activity,
                          list skip_activities, str last_activity)

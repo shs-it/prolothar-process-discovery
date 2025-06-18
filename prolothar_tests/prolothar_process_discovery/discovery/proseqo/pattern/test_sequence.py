@@ -57,7 +57,7 @@ class TestSequence(unittest.TestCase):
         dfg.add_count('D', 'B')
         dfg.add_count('D', 'A')
 
-        folded_dfg = dfg.fold([
+        folded_dfg = dfg.fold({
             Sequence.from_activity_list(['A','B','C'])
         ])
 
@@ -73,7 +73,7 @@ class TestSequence(unittest.TestCase):
         dfg.add_count('B', 'C')
         dfg.add_count('D', 'B')
 
-        folded_dfg = dfg.fold([
+        folded_dfg = dfg.fold({
             Sequence.from_activity_list(['A','B','C'])
         ])
 

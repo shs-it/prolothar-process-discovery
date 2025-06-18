@@ -46,8 +46,8 @@ class TestOptional(unittest.TestCase):
         optional_choice = Optional(Choice([Singleton('b'), Singleton('c')]))
         choice_optional = Choice([Optional(Singleton('b')), Singleton('c')])
 
-        dfg_optional_choice = dfg.fold([optional_choice])
-        dfg_choice_optional = dfg.fold([choice_optional])
+        dfg_optional_choice = dfg.fold({optional_choice])
+        dfg_choice_optional = dfg.fold({Choice_optional])
         dfg_choice_optional.remove_degenerated_patterns()
 
         self.assertEqual(dfg_optional_choice, dfg_choice_optional)

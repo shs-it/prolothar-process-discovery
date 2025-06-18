@@ -20,8 +20,8 @@ from prolothar_common.models.eventlog import EventLog, Trace
 import prolothar_common.mdl_utils as mdl_utils
 
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
-from prolothar_process_discovery.discovery.proseqo.pattern_dfg import Pattern
-from prolothar_process_discovery.discovery.proseqo.pattern_dfg import Singleton
+from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern
+from prolothar_process_discovery.discovery.proseqo.pattern.singleton import Singleton
 from prolothar_process_discovery.discovery.proseqo.cover_streams.pattern_stream import PatternStream
 from prolothar_process_discovery.discovery.proseqo.cover_streams.meta_stream import MetaStream
 from prolothar_process_discovery.discovery.proseqo.cover_streams.move_stream import MoveStream

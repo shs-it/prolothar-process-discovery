@@ -76,7 +76,7 @@ class TestMdlEstimation(unittest.TestCase):
     #             simple_activity_log)
 
     #     dfg = PatternDfg.create_from_event_log(log)
-    #     pattern_dfg = dfg.fold([Sequence.from_activity_list(['1', '2'])])
+    #     pattern_dfg = dfg.fold({Sequence.from_activity_list(['1', '2'])])
     #     initial_cover = compute_cover(log.traces, pattern_dfg)
     #     original_mdl = compute_mdl_score(log, pattern_dfg, verbose=True)
     #     print(original_mdl)

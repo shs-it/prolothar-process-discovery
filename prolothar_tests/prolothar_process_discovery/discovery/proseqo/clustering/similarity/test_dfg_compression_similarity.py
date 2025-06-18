@@ -94,14 +94,14 @@ class TestDfgCompressionSimilarity(unittest.TestCase):
         self.assertEqual(1.0, similarity.compute(self.log2, self.log2))
         self.assertEqual(1.0, similarity.compute(self.log3, self.log3))
 
-        self.assertAlmostEqual(0.679, similarity.compute(self.log1, self.log2),
+        self.assertAlmostEqual(0.748, similarity.compute(self.log1, self.log2),
                                delta=0.001)
-        self.assertAlmostEqual(-0.022, similarity.compute(self.log4, self.log5),
+        self.assertAlmostEqual(0.196, similarity.compute(self.log4, self.log5),
                                delta=0.001)
 
-        self.assertAlmostEqual(-0.182, similarity.compute(self.log1, self.log3),
+        self.assertAlmostEqual(0.123, similarity.compute(self.log1, self.log3),
                                delta=0.001)
-        self.assertAlmostEqual(-0.141, similarity.compute(self.log2, self.log3),
+        self.assertAlmostEqual(0.083, similarity.compute(self.log2, self.log3),
                                delta=0.001)
 
     def test_nr_of_edges_nodes(self):

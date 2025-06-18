@@ -32,7 +32,7 @@ class PatternGraphOc3(Oc3):
                  compute_encoded_length_isolated: bool = True):
         self.__pattern_graph = pattern_graph
         self.__activity_set = log.compute_activity_set()
-        self.__cover = compute_cover(log, self.__pattern_graph,
+        self.__cover = compute_cover(log.traces, self.__pattern_graph,
                                      activity_set = self.__activity_set)
         super().__init__(
             log, devide_by_instance_length=devide_by_trace_length,
@@ -44,7 +44,7 @@ class PatternGraphOc3(Oc3):
     def compute_encoded_length_of_dataset(self, dataset) -> float:
         log = EventLog()
         log.traces = dataset
-        cover = compute_cover(log, self.__pattern_graph,
+        cover = compute_cover(log.traces, self.__pattern_graph,
                               activity_set = self.__activity_set)
         return cover.get_encoded_length_of_cover(log)
 

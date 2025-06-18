@@ -23,22 +23,21 @@ class TestGreedyMinEditDistance(unittest.TestCase):
 
     def test_compute_no_distance(self):
         log1 = EventLog.create_from_simple_activity_log([
-            [0,0,0,1,2,3,4,5,4,5,6],
-            [0,0,1,3,2,4,5,4,5,6],
+            ["0", "0", "0", "1", "2", "3", "4", "5", "4", "5", "6"],
+            ["0", "0", "1", "3", "2", "4", "5", "4", "5", "6"],
         ])
-        self.assertEqual(0, GreedyMinEditLogDistance().compute(log1,log1))
+        self.assertEqual(0, GreedyMinEditLogDistance().compute(log1, log1))
 
     def test_compute_two_removes(self):
         log1 = EventLog.create_from_simple_activity_log([
-            [0,0,0,1,2,3,4,5,4,5,6],
-            [0,0,1,3,2,4,5,4,5,6],
+            ["0", "0", "0", "1", "2", "3", "4", "5", "4", "5", "6"],
+            ["0", "0", "1", "3", "2", "4", "5", "4", "5", "6"],
         ])
         log2 = EventLog.create_from_simple_activity_log([
-            [0,0,0,1,2,3,4,5,5,6],
-            [0,0,1,2,4,5,4,5,6],
+            ["0", "0", "0", "1", "2", "3", "4", "5", "5", "6"],
+            ["0", "0", "1", "2", "4", "5", "4", "5", "6"],
         ])
-        self.assertEqual(2, GreedyMinEditLogDistance().compute(log1,log2))
-
+        self.assertEqual(2, GreedyMinEditLogDistance().compute(log1, log2))
 
 if __name__ == '__main__':
     unittest.main()

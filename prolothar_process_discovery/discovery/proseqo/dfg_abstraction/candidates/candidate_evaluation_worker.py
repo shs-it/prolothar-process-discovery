@@ -113,10 +113,12 @@ def _evaluate_new_candidates(
             if mdl_gain > 0:
                     result_queue.put((mdl_gain, new_candidate))
     else:
+        activity_set = log.compute_activity_set()
         for new_candidate in new_candidates:
             mdl_gain = _compute_exact_mdl_gain(
                     original_dfg, log, selected_candidates,
-                    new_candidate, mdl_of_folded_dfg)
+                    new_candidate, mdl_of_folded_dfg,
+                    activity_set)
 
             if mdl_gain > 0:
                 result_queue.put((mdl_gain, new_candidate))
@@ -125,10 +127,11 @@ def _evaluate_new_candidates(
 
 def _compute_exact_mdl_gain(
         dfg: PatternDfg, log: EventLog, selected_candidates: List[Candidate],
-        new_candidate: Candidate, current_mdl: float) -> float:
+        new_candidate: Candidate, current_mdl: float,
+        activity_set: set) -> float:
     try:
-        candidate_dfg, candidate_set = apply_candidate(
-                    dfg, selected_candidates, new_candidate)
+        candidate_dfg, _ = apply_candidate(dfg, selected_candidates, new_candidate)
+        return current_mdl - compute_mdl_score(log, candidate_dfg, activity_set=activity_set)
     except KeyError as e:
         with open('temp.txt', 'w') as f:
             f.write('===============\n')
@@ -146,6 +149,3 @@ def _compute_exact_mdl_gain(
             c.apply_on_dfg(pdfg)
         pdfg.plot(filepath='temp')
         raise e
-
-    return current_mdl - compute_mdl_score(log, candidate_dfg)
-

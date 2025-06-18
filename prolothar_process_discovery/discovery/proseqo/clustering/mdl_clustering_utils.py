@@ -87,6 +87,6 @@ def compress_with_simple_patterns(pattern_dfg: PatternDfg) -> PatternDfg:
                 find_one_step_optionals_in_dfg]:
             patterns = pattern_finder(pattern_dfg)
             if patterns:
-                pattern_dfg = pattern_dfg.fold(patterns)
+                pattern_dfg = pattern_dfg.fold(set(patterns))
                 change = True
     return pattern_dfg

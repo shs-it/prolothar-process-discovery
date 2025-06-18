@@ -51,7 +51,7 @@ class TestPatternDfgLogDistance(unittest.TestCase):
         distance_of_dfg_with_missing_edges = distance.compute(
                 dfg_with_missing_edges, log, random_seed=42)
 
-        dfg_with_patterns = dfg.fold([
+        dfg_with_patterns = dfg.fold({
                 Sequence([Singleton('1'), Singleton('2')]),
                 Sequence([Singleton('4'), Singleton('5')]),
                 Sequence([Singleton('7'), Singleton('8')]),

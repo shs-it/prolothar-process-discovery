@@ -14,16 +14,20 @@
     You should have received a copy of the GNU General Public License
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
+from prolothar_common.models.eventlog.trace cimport Trace
+from prolothar_process_discovery.discovery.proseqo.cover cimport Cover
+from prolothar_process_discovery.discovery.proseqo.pattern.pattern cimport Pattern
+
 cdef class CoveringPattern:
 
-    cdef public object pattern
+    cdef public Pattern pattern
     cdef public bint started_covering
     cdef public bint completed_covering
-    cdef public object trace
-    cdef public object last_covered_activity_before_this_pattern
+    cdef public Trace trace
+    cdef public str last_covered_activity_before_this_pattern
 
-    cpdef process_covering_step(self, object cover, str last_activity, str next_activity)
-    cpdef int skip_to_end(self, object cover, object trace, str last_covered_activity)
+    cpdef process_covering_step(self, Cover cover, str last_activity, str next_activity)
+    cpdef int skip_to_end(self, Cover cover, Trace trace, str last_covered_activity)
     cpdef set get_next_coverable_activities(self)
     cdef set _get_next_coverable_activities(self)
     cpdef bint can_cover(self, str activity)

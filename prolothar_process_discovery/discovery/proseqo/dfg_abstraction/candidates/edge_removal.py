@@ -26,7 +26,8 @@ from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Patter
 from prolothar_process_discovery.discovery.proseqo.pattern.singleton import Singleton
 from prolothar_process_discovery.discovery.proseqo.cover import Cover
 from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
-from prolothar_common.models.directly_follows_graph import Edge
+from prolothar_common.models.dfg.edge import Edge
+
 
 from prolothar_process_discovery.discovery.proseqo.cover_streams.move_stream import MoveStream
 

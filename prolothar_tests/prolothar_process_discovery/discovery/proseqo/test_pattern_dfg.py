@@ -167,8 +167,8 @@ class TestPatternDfg(unittest.TestCase):
         dfg.add_count('5', '1')
         dfg.add_count('5', '4')
 
-        folden_dfg = dfg.fold([Sequence.from_activity_list(['1','2']),
-                               Sequence.from_activity_list(['4','5'])])
+        folden_dfg = dfg.fold({Sequence.from_activity_list(['1','2']),
+                               Sequence.from_activity_list(['4','5'])})
 
         pattern_dfg = PatternDfg()
         pattern_dfg.add_count('0', '[1,2]', count=3)
@@ -203,9 +203,9 @@ class TestPatternDfg(unittest.TestCase):
         dfg.add_count('12', '14')
         dfg.add_count('13', '14')
 
-        folden_dfg = dfg.fold([Choice([Singleton('11'),
+        folden_dfg = dfg.fold({Choice([Singleton('11'),
                                       Sequence.from_activity_list(['9', '10'])]),
-                               Choice([Singleton('12'), Singleton('13')])])
+                               Choice([Singleton('12'), Singleton('13')])})
 
         expected_folden_dfg = PatternDfg()
         expected_folden_dfg.add_count('2', '5')
@@ -231,7 +231,7 @@ class TestPatternDfg(unittest.TestCase):
         dfg.add_count('6', '9', count=4)
         dfg.add_count('8', '9', count=5)
 
-        folden_dfg = dfg.fold([Optional(Singleton('8'))])
+        folden_dfg = dfg.fold({Optional(Singleton('8'))})
         expected_folden_dfg = PatternDfg()
         expected_folden_dfg.add_count('1', '2')
         expected_folden_dfg.add_count('1', '5')
@@ -265,7 +265,7 @@ class TestPatternDfg(unittest.TestCase):
         community_2 = SubGraph(PatternDfg.create_from_dfg(
                 dfg.select_nodes(['6', '8', '9'])), ['6'], ['9'])
 
-        folden_dfg = dfg.fold([community_1, community_2])
+        folden_dfg = dfg.fold({community_1, community_2})
 
         expected_folden_dfg = PatternDfg()
         expected_folden_dfg.add_count('[{1,5},...,{4}]', '[{6},...,{9}]')
@@ -331,7 +331,7 @@ class TestPatternDfg(unittest.TestCase):
         expected_folden_dfg.add_count(cluster_name, 'E')
         expected_folden_dfg.add_pattern(cluster_name, cluster_pattern)
 
-        folden_dfg = dfg.fold([cluster_pattern])
+        folden_dfg = dfg.fold({cluster_pattern})
 
         self.assertEqual(expected_folden_dfg, folden_dfg)
         self.assertEqual(cluster_pattern, folden_dfg.nodes[cluster_name].pattern)
@@ -374,7 +374,7 @@ class TestPatternDfg(unittest.TestCase):
                 community_pdfg, ['Read a Book', 'Watch TV'],
                 ['[Take out of the Oven,Sprinkle with Icing Sugar?,[Eat,Smile,End]]'])
 
-        folded_dfg = dfg.fold([clustering, community])
+        folded_dfg = dfg.fold({clustering, community})
 
         self.assertEqual(2, folded_dfg.get_nr_of_nodes())
         self.assertEqual(1, folded_dfg.get_nr_of_edges())
@@ -390,7 +390,7 @@ class TestPatternDfg(unittest.TestCase):
 
         choice_pattern = Choice([Singleton('B1'), Singleton('B2')])
 
-        folded_dfg = dfg.fold([choice_pattern])
+        folded_dfg = dfg.fold({choice_pattern})
 
         expected_dfg = PatternDfg()
         expected_dfg.add_count('A', '(B1|B2)', count=2)
@@ -418,8 +418,8 @@ class TestPatternDfg(unittest.TestCase):
                 Sequence([Singleton('D'), Singleton('F')]),
                 Sequence([Singleton('E'), Optional(Singleton('G'))])])
         end_list_pattern = Sequence.from_activity_list(['H', 'I'])
-        folden_dfg = dfg.fold([start_list_pattern, nested_pattern,
-                               end_list_pattern])
+        folden_dfg = dfg.fold({start_list_pattern, nested_pattern,
+                               end_list_pattern})
 
         expected_folden_dfg = PatternDfg()
         expected_folden_dfg.add_count('[A,B,C]', '([D,F]|[E,G?])', count=2)
@@ -516,8 +516,8 @@ class TestPatternDfg(unittest.TestCase):
                 Sequence([Singleton('D'), Singleton('F')]),
                 Sequence([Singleton('E'), Optional(Singleton('G'))])])
         end_list_pattern = Sequence.from_activity_list(['H', 'I'])
-        folded_dfg = dfg.fold([start_list_pattern, nested_pattern,
-                               end_list_pattern])
+        folded_dfg = dfg.fold({start_list_pattern, nested_pattern,
+                               end_list_pattern})
 
         expected_graph = NestedGraph()
         expected_graph.add_node(NestedGraph.Node(

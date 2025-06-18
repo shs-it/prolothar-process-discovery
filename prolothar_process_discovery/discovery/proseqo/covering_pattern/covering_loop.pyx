@@ -15,25 +15,27 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern
+from prolothar_common.models.eventlog.trace cimport Trace
+from prolothar_process_discovery.discovery.proseqo.pattern.pattern cimport Pattern
 from prolothar_process_discovery.discovery.proseqo.covering_pattern.covering_pattern cimport CoveringPattern
+from prolothar_process_discovery.discovery.proseqo.cover cimport Cover
 
 cdef class CoveringLoop(CoveringPattern):
     """implements covering for the Loop Pattern"""
 
-    def __init__(self, loop: Pattern, trace, last_covered_activity: str):
+    def __init__(self, Pattern loop, Trace trace, str last_covered_activity):
         super().__init__(loop, trace, last_covered_activity)
         self.covering_subpattern = None
         self.loop_iterations = 0
 
-    cpdef process_covering_step(self, object cover, str last_activity, str next_activity):
+    cpdef process_covering_step(self, Cover cover, str last_activity, str next_activity):
         if self.completed_covering:
             raise ValueError('loop already completed')
         if not self.started_covering:
             self.started_covering = True
             if self.pattern.contains_activity(next_activity):
-                self.covering_subpattern = self.pattern.get_subpatterns()[
-                        0].for_covering(self.trace, last_activity)
+                self.covering_subpattern = (<Pattern>self.pattern.get_subpatterns()[
+                        0]).for_covering(self.trace, last_activity)
             else:
                 raise ValueError('subpattern must contain activity at start')
 
@@ -56,21 +58,22 @@ cdef class CoveringLoop(CoveringPattern):
             self.covering_subpattern.process_covering_step(
                     cover, last_activity, next_activity)
 
-    cpdef int skip_to_end(self, object cover, object trace, str last_covered_activity):
+    cpdef int skip_to_end(self, Cover cover, Trace trace, str last_covered_activity):
+        cdef int model_moves
         if not self.completed_covering:
             #we have to do at least 1 loop iteration
             if self.covering_subpattern is None:
-                self.covering_subpattern = self.pattern.get_subpatterns()[
-                            0].for_covering(self.trace, last_covered_activity)
+                self.covering_subpattern = (<Pattern>self.pattern.get_subpatterns()[
+                            0]).for_covering(self.trace, last_covered_activity)
 
             model_moves = self.covering_subpattern.skip_to_end(
                     cover, trace, last_covered_activity)
             cover.meta_stream.add_end_code(self.pattern, self.loop_iterations,
                                            last_covered_activity)
+            self.completed_covering = True
             return model_moves
         else:
             return 0
-        self.completed_covering = True
 
     cdef set _get_next_coverable_activities(self):
         if self.covering_subpattern.completed_covering:

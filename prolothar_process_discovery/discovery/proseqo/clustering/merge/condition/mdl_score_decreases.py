@@ -51,7 +51,7 @@ class MdlScoreDecreases(MergeCondition):
             self._log.add_traces(cluster.traces)
 
     def _compute_folden_pdfg(self, clusters: List[EventLog]) -> PatternDfg:
-        return self._pattern_dfg.fold([
+        return self._pattern_dfg.fold({
                 self.__create_clustering_pattern(clusters)])
 
     def __create_clustering_pattern(self, clusters: List[EventLog]) -> Clustering:

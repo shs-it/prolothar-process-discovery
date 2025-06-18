@@ -15,8 +15,9 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 from prolothar_process_discovery.discovery.proseqo.covering_pattern.covering_pattern cimport CoveringPattern
+from prolothar_process_discovery.discovery.proseqo.cover cimport Cover
 
 cdef class CoveringSequence(CoveringPattern):
     cdef CoveringPattern current_subpattern_covering
 
-    cdef _start_covering_on_next_matching_pattern(self, object cover, str last_activity, str next_activity)
+    cdef _start_covering_on_next_matching_pattern(self, Cover cover, str last_activity, str next_activity)

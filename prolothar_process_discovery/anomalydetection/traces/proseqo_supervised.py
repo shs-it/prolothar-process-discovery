@@ -17,7 +17,7 @@
 
 from prolothar_common.models.eventlog import EventLog, Trace
 from prolothar_process_discovery.discovery.proseqo.dfg_abstraction.proseqo import Proseqo
-from prolothar_process_discovery.discovery.proseqo.mdl_score import compute_cover
+from prolothar_process_discovery.discovery.proseqo.greedy_cover import compute_cover
 from prolothar_process_discovery.discovery.proseqo.greedy_cover import GreedyCoverComputer
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 from prolothar_process_discovery.anomalydetection.traces.supervised_detector import SupervisedDetector

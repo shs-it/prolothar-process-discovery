@@ -36,7 +36,7 @@ class TestDeoptionalizer(unittest.TestCase):
         ])
 
         dfg = PatternDfg.create_from_event_log(log)
-        dfg_with_optionals = dfg.fold([
+        dfg_with_optionals = dfg.fold({
             Sequence([
                 Singleton('0'),
                 Optional(Singleton('1')),

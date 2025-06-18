@@ -14,11 +14,9 @@
     You should have received a copy of the GNU General Public License
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
-from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern
-
 cdef class CoveringPattern:
 
-    def __init__(self, pattern: Pattern, trace, str last_covered_activity):
+    def __init__(self, Pattern pattern, Trace trace, str last_covered_activity):
         """
         Args:
             pattern:
@@ -36,10 +34,10 @@ cdef class CoveringPattern:
         self.trace = trace
         self.last_covered_activity_before_this_pattern = last_covered_activity
 
-    cpdef process_covering_step(self, object cover, str last_activity, str next_activity):
+    cpdef process_covering_step(self, Cover cover, str last_activity, str next_activity):
         raise NotImplementedError(type(self))
 
-    cpdef int skip_to_end(self, object cover, object trace, str last_covered_activity):
+    cpdef int skip_to_end(self, Cover cover, Trace trace, str last_covered_activity):
         """skips all activities in this pattern using model moves
         Args:
             cover:

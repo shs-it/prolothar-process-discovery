@@ -55,7 +55,7 @@ class TestInclusiveChoice(unittest.TestCase):
         dfg.add_count('c', 'g', count=3)
         dfg.add_count('c', 'h')
 
-        dfg_with_choice = dfg.fold([
+        dfg_with_choice = dfg.fold({
             InclusiveChoice([
                     Singleton('g'),
                     Singleton('h'),

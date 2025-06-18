@@ -18,7 +18,8 @@
 from typing import List, Tuple, Set
 
 from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern
-from prolothar_common.models.directly_follows_graph import Node
+from prolothar_common.models.dfg.node import Node
+
 from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import NR_OF_PATTERN_TYPES_WITH_SINGLETON
 from prolothar_process_discovery.discovery.proseqo.pattern.singleton import Singleton
@@ -34,7 +35,7 @@ from random import Random
 
 class Sequence(Pattern):
     def __init__(self, pattern_list: List[Pattern],
-                 special_noise_set: Set[str] = None):
+                 special_noise_set: Set[str]|None = None):
         super().__init__()
         self.pattern_list = pattern_list
         if special_noise_set is None:

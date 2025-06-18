@@ -172,8 +172,8 @@ def get_ideal_pattern_graph_with_clustering(log: EventLog) -> PatternDfg:
             raise ValueError()
 
     sponge_community = PatternDfg.create_from_dfg(sponge_model)
-    sponge_community = sponge_community.fold([Sequence.from_activity_list([
-            'Start', 'Add Butter', 'Add Sugar', 'Beat up Foamy', 'Add Eggs'])])
+    sponge_community = sponge_community.fold({Sequence.from_activity_list([
+            'Start', 'Add Butter', 'Add Sugar', 'Beat up Foamy', 'Add Eggs'])})
 
     sponge_community = SubGraph(sponge_community,
                                 ['[Start,Add Butter,Add Sugar,Beat up Foamy,Add Eggs]'],

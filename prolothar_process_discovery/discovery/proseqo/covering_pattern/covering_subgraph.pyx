@@ -18,7 +18,9 @@
 contains logic for covering a subtrace with a SubGraph pattern
 """
 
+from prolothar_common.models.eventlog.trace cimport Trace
 from prolothar_process_discovery.discovery.proseqo.covering_pattern.covering_pattern cimport CoveringPattern
+from prolothar_process_discovery.discovery.proseqo.cover cimport Cover
 
 from typing import List
 
@@ -29,7 +31,7 @@ cdef class CoveringSubGraph(CoveringPattern):
         self.current_node = None
         self.covering_subpattern = None
 
-    cpdef process_covering_step(self, object cover, str last_activity, str next_activity):
+    cpdef process_covering_step(self, Cover cover, str last_activity, str next_activity):
         if self.completed_covering:
             raise ValueError('covering already completed')
         if not self.started_covering:
@@ -37,7 +39,7 @@ cdef class CoveringSubGraph(CoveringPattern):
         else:
             self._continue_covering(cover, last_activity, next_activity)
 
-    cdef _start_covering(self, object cover, str last_activity, str next_activity):
+    cdef _start_covering(self, Cover cover, str last_activity, str next_activity):
         self.current_node = self.pattern.find_node_containing_activity(next_activity)
         if self.current_node is None:
             self.__add_log_move(cover, last_activity, next_activity)
@@ -92,7 +94,7 @@ cdef class CoveringSubGraph(CoveringPattern):
             alternatives: List[str]):
         try:
             cover.meta_stream.add_routing_code(
-                    self.pattern, self.current_node.pattern.get_activity_name(),
+                    self.pattern, self.current_node.pattern,
                     frozenset(alternatives), last_activity)
         except KeyError as e:
             print('###################')
@@ -107,7 +109,7 @@ cdef class CoveringSubGraph(CoveringPattern):
         self.covering_subpattern.process_covering_step(
                 cover, last_activity, next_activity)
 
-    cdef _skip_activities(self, object cover, str preceding_activity,
+    cdef _skip_activities(self, Cover cover, str preceding_activity,
                          list skip_activities, str last_activity):
         self._skip_preceding_activity = preceding_activity
         for activity in skip_activities:
@@ -120,7 +122,7 @@ cdef class CoveringSubGraph(CoveringPattern):
                 alternatives = set(self.pattern.get_start_activities())
             alternatives.add(pattern.get_activity_name())
             cover.meta_stream.add_routing_code(
-                    self.pattern, pattern.get_activity_name(),
+                    self.pattern, pattern,
                     frozenset(alternatives), last_activity)
             pattern.for_covering(
                     self.trace, last_activity).skip_to_end(
@@ -151,7 +153,7 @@ cdef class CoveringSubGraph(CoveringPattern):
                     len_of_shortest_shortest_path = len(shortest_path)
         return shortest_shortest_path
 
-    cpdef int skip_to_end(self, object cover, object trace, str last_covered_activity):
+    cpdef int skip_to_end(self, Cover cover, Trace trace, str last_covered_activity):
         cdef int number_of_skipped_activities = 0
         if self.covering_subpattern is not None:
             self.covering_subpattern.skip_to_end(

@@ -15,19 +15,23 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 
+from prolothar_common.models.eventlog.trace cimport Trace
+from prolothar_process_discovery.discovery.proseqo.cover cimport Cover
+from prolothar_process_discovery.discovery.proseqo.pattern.singleton cimport Singleton
+
 cdef class CoveringSingleton(CoveringPattern):
 
-    def __init__(self, object singleton, object trace, str last_covered_activity):
+    def __init__(self, Singleton singleton, Trace trace, str last_covered_activity):
         super().__init__(singleton, trace, last_covered_activity)
 
-    cpdef process_covering_step(self, cover, str last_activity, str next_activity):
+    cpdef process_covering_step(self, Cover cover, str last_activity, str next_activity):
         if self.completed_covering:
             raise ValueError('Singleton already has been used for covering')
         cover.move_stream.add_synchronous_move(last_activity)
         self.started_covering = True
         self.completed_covering = True
 
-    cpdef int skip_to_end(self, object cover, object trace, str last_covered_activity):
+    cpdef int skip_to_end(self, Cover cover, Trace trace, str last_covered_activity):
         if not self.completed_covering:
             cover.move_stream.add_model_move(last_covered_activity)
         self.started_covering = True

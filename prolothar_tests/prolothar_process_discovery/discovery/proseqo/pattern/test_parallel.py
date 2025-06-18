@@ -58,7 +58,7 @@ class TestParallel(unittest.TestCase):
         dfg.add_count('A', '1', count=7)
         dfg.add_count('C', '1', count=4)
 
-        folded_dfg = dfg.fold([Parallel.from_activity_list(['A','B','C'])])
+        folded_dfg = dfg.fold({Parallel.from_activity_list(['A','B','C'])])
 
         expected_folded_dfg = PatternDfg()
         expected_folded_dfg.add_count('0', '(A||B||C)', count=6)

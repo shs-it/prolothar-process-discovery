@@ -168,7 +168,7 @@ class BpmnToPatternDfgConverter():
             return pattern_dfg_with_element_ids
 
         if any(not branch for branch in branches):
-            pattern_dfg = pattern_dfg_with_element_ids.fold([
+            pattern_dfg = pattern_dfg_with_element_ids.fold({
                 Optional(diverging_gateway.create_pattern([
                     SubGraph(self.__fold_pattern_dfg(
                         pattern_dfg_with_element_ids.select_nodes(branch)),
@@ -183,7 +183,7 @@ class BpmnToPatternDfgConverter():
                 for branch in branches
             ])
             try:
-                pattern_dfg = pattern_dfg_with_element_ids.fold([gateway_pattern])
+                pattern_dfg = pattern_dfg_with_element_ids.fold({gateway_pattern])
             except KeyError as e:
                 print(e)
         pattern_dfg.remove_node(diverging_gateway.get_id(),

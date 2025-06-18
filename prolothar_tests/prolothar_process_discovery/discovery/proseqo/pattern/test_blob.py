@@ -57,7 +57,7 @@ class TestBlob(unittest.TestCase):
         dfg.add_count('c', 'g', count=3)
         dfg.add_count('c', 'h')
 
-        dfg_with_blob = dfg.fold([
+        dfg_with_blob = dfg.fold({
             Blob({'g', 'h', 'k', 'l'})
         ])
 
@@ -109,7 +109,7 @@ class TestBlob(unittest.TestCase):
         dfg.add_count('c', 'g', count=3)
         dfg.add_count('c', 'h')
 
-        dfg_with_blob = dfg.fold([
+        dfg_with_blob = dfg.fold({
             Optional(Blob({'g', 'h', 'k', 'l'}))
         ])
 
@@ -160,10 +160,10 @@ class TestBlob(unittest.TestCase):
         dfg.add_count('c', 'g', count=3)
         dfg.add_count('c', 'h')
 
-        dfg_with_blob = dfg.fold([
+        dfg_with_blob = dfg.fold({
             Blob({'g', 'h', 'k', 'l'})
         ])
-        dfg_with_blob = dfg_with_blob.fold([
+        dfg_with_blob = dfg_with_blob.fold({
             Optional(Blob({'g', 'h', 'k', 'l'}))
         ])
 

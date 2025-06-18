@@ -101,7 +101,7 @@ class TestCandidates(unittest.TestCase):
         dfg = PatternDfg.create_from_event_log(log)
         self.assertEqual(0, len(infer_candidates(dfg, dfg)))
 
-        pattern_dfg = dfg.fold([Sequence.from_activity_list(['h', 'b'])])
+        pattern_dfg = dfg.fold({Sequence.from_activity_list(['h', 'b'])})
         self.assertEqual(1, len(infer_candidates(dfg, pattern_dfg)))
 
         pattern_dfg.remove_edge(('c', '[h,b]'))

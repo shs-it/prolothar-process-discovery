@@ -15,15 +15,16 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 from typing import List
-from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern
+from prolothar_common.models.eventlog.trace cimport Trace
+from prolothar_process_discovery.discovery.proseqo.pattern.pattern cimport Pattern
 
 cdef class CoveringSequence(CoveringPattern):
 
-    def __init__(self, sequence: Pattern, object trace, str last_covered_activity):
+    def __init__(self, Pattern sequence, Trace trace, str last_covered_activity):
         super().__init__(sequence, trace, last_covered_activity)
         self.current_subpattern_covering = None
 
-    cpdef process_covering_step(self, object cover, str last_activity, str next_activity):
+    cpdef process_covering_step(self, Cover cover, str last_activity, str next_activity):
         #make sure that an already covered subpattern does not lead to
         #unnessecary model moves
         if not self.can_cover(next_activity):
@@ -54,7 +55,7 @@ cdef class CoveringSequence(CoveringPattern):
             self.pattern.get_subpatterns()[-1] == self.current_subpattern_covering.pattern)
 
     cdef _start_covering_on_next_matching_pattern(
-            self, object cover, str last_activity, str next_activity):
+            self, Cover cover, str last_activity, str next_activity):
         self.started_covering = True
 
         for subpattern in self.__get_uncovered_subpatterns():
@@ -93,14 +94,14 @@ cdef class CoveringSequence(CoveringPattern):
                 subpattern_end_index += 1
             return subpatterns[:subpattern_end_index]
 
-    cpdef int skip_to_end(self, object cover, object trace, str last_covered_activity):
+    cpdef int skip_to_end(self, Cover cover, Trace trace, str last_covered_activity):
         cdef int nr_of_model_moves = 0
         if self.current_subpattern_covering is not None:
             nr_of_model_moves = self.current_subpattern_covering.skip_to_end(
                     cover, trace, last_covered_activity)
         for subpattern in self.__get_uncovered_subpatterns():
-            nr_of_model_moves += subpattern.for_covering(
-                    trace, last_covered_activity).skip_to_end(
+            nr_of_model_moves += (<CoveringPattern>(<Pattern>subpattern).for_covering(
+                    trace, last_covered_activity)).skip_to_end(
                     cover, trace, last_covered_activity)
         self.completed_covering = True
         return nr_of_model_moves
@@ -129,9 +130,10 @@ cdef class CoveringSequence(CoveringPattern):
         elif next_activity in self.pattern.special_noise_set:
             cover.move_stream.add_synchronous_move(last_activity)
             cover.meta_stream.add_absent_code(self.pattern, last_activity)
-            cover.meta_stream.add_routing_code(
-                    self.pattern, next_activity,
-                    frozenset(self.pattern.special_noise_set),
-                    last_activity)
+            cover.meta_stream.add_routing_code_for_given_activity(
+                self.pattern, next_activity,
+                frozenset(self.pattern.special_noise_set),
+                last_activity
+            )
 
 

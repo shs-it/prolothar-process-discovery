@@ -56,7 +56,7 @@ class SubmodelDetector():
                             verbose: bool) -> Union[SubGraph,Clustering]:
         sublog = community.create_cut_log_from_community(log)
 
-        one_cluster = community.pattern_dfg.fold([
+        one_cluster = community.pattern_dfg.fold({
                 self.__create_clustering_pattern([sublog])])
         best_mdl = compute_mdl_score(sublog, one_cluster, verbose=False)
         best_pattern = community
@@ -66,7 +66,7 @@ class SubmodelDetector():
             cluster = self.__create_clustering_pattern(
                     clustering_strategy.cluster(sublog))
             mdl_with_cluster = compute_mdl_score(
-                    sublog, community.pattern_dfg.fold([cluster]), verbose=False)
+                    sublog, community.pattern_dfg.fold({cluster]), verbose=False)
             if mdl_with_cluster < best_mdl:
                 if verbose:
                     print('%r with %d clusters could improve MDL (%.2f < %.2f)' % (

@@ -87,7 +87,7 @@ class TestBpmnToDfgConverter(unittest.TestCase):
         expected_dfg.add_count('F', 'G')
         expected_dfg.add_count('G', 'D')
         expected_dfg.add_count('G', 'F')
-        expected_dfg = expected_dfg.fold([
+        expected_dfg = expected_dfg.fold({
             Sequence([
                 Singleton('A'),
                 Choice([

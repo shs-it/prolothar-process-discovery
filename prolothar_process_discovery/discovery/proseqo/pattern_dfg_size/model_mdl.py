@@ -32,7 +32,8 @@ class ModelMdl(PatternDfgSize):
     def precompute(self, logs: List[EventLog]):
         self.__activity_set = set()
         for log in logs:
-            self.__activity_set.update(self.__activity_set)
+            self.__activity_set.update(log.compute_activity_set())
+        self.__activity_set = frozenset(self.__activity_set)
 
     def __repr__(self) -> str:
         return 'ModelMdl'

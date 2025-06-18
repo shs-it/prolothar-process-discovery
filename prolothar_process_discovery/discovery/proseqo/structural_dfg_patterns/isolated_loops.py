@@ -16,7 +16,8 @@
 '''
 
 from prolothar_common.models.directly_follows_graph import DirectlyFollowsGraph
-from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg, Node
+from prolothar_common.models.dfg.node import Node
+from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 from prolothar_process_discovery.discovery.proseqo.pattern.singleton import Singleton
 from prolothar_process_discovery.discovery.proseqo.pattern.sequence import Sequence
 from prolothar_process_discovery.discovery.proseqo.pattern.loop import Loop

@@ -15,9 +15,11 @@
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
 from typing import Tuple, Dict, List
-from prolothar_common import mdl_utils
+from prolothar_common cimport mdl_utils
 
-from collections import Counter
+cdef str SYNCHRONOUS_MOVE = 'sync'
+cdef str LOG_MOVE = 'log'
+cdef str MODEL_MOVE = 'model'
 
 cdef class MoveStream():
     """code stream of the cover that stores codes for model moves, log moves
@@ -25,10 +27,6 @@ cdef class MoveStream():
     model that are not observable in the log. a log move is an activity that
     is observed in the log but not explained by the model. a synchronous move
     is behavior that is both modeled and observed"""
-
-    cdef dict __conditional_counter
-    cdef dict __trace_move_codes_cache
-    cdef tuple __current_trace
 
     SYNCHRONOUS_MOVE = 'sync'
     LOG_MOVE = 'log'
@@ -61,7 +59,7 @@ cdef class MoveStream():
                 default is 1.
         """
         self.__add_move_code(
-                last_covered_activity, MoveStream.LOG_MOVE, count,
+                last_covered_activity, LOG_MOVE, count,
                 add_to_cache=add_to_cache)
 
     cpdef add_model_move(self, str last_covered_activity, int count = 1,
@@ -75,7 +73,7 @@ cdef class MoveStream():
                 default is 1.
         """
         self.__add_move_code(
-                last_covered_activity, MoveStream.MODEL_MOVE, count,
+                last_covered_activity, MODEL_MOVE, count,
                 add_to_cache=add_to_cache)
 
     cpdef add_synchronous_move(self, str last_covered_activity, int count = 1,
@@ -90,7 +88,7 @@ cdef class MoveStream():
                 default is 1.
         """
         self.__add_move_code(
-                last_covered_activity, MoveStream.SYNCHRONOUS_MOVE, count,
+                last_covered_activity, SYNCHRONOUS_MOVE, count,
                 add_to_cache=add_to_cache)
 
     cdef __add_move_code(
@@ -99,9 +97,9 @@ cdef class MoveStream():
         cdef dict counter = <dict>self.__conditional_counter.get(last_covered_activity, None)
         if counter is None:
             counter = {
-                    MoveStream.SYNCHRONOUS_MOVE: 0,
-                    MoveStream.MODEL_MOVE: 0,
-                    MoveStream.LOG_MOVE: 0,
+                    SYNCHRONOUS_MOVE: 0,
+                    MODEL_MOVE: 0,
+                    LOG_MOVE: 0,
             }
             self.__conditional_counter[last_covered_activity] = counter
         counter[move_code] += count
@@ -162,9 +160,9 @@ cdef class MoveStream():
         times it has been used in total
         """
         cdef dict total_counter = {
-            MoveStream.SYNCHRONOUS_MOVE: 0,
-            MoveStream.MODEL_MOVE: 0,
-            MoveStream.LOG_MOVE: 0,
+            SYNCHRONOUS_MOVE: 0,
+            MODEL_MOVE: 0,
+            LOG_MOVE: 0,
         }
         for counter in self.__conditional_counter.values():
             for code,count in counter.items():
@@ -172,13 +170,13 @@ cdef class MoveStream():
         return total_counter
 
     def get_number_of_synchronous_moves(self) -> int:
-        return self.count_move_codes()[MoveStream.SYNCHRONOUS_MOVE]
+        return self.count_move_codes()[SYNCHRONOUS_MOVE]
 
     def get_number_of_log_moves(self) -> int:
-        return self.count_move_codes()[MoveStream.LOG_MOVE]
+        return self.count_move_codes()[LOG_MOVE]
 
     def get_number_of_model_moves(self) -> int:
-        return self.count_move_codes()[MoveStream.MODEL_MOVE]
+        return self.count_move_codes()[MODEL_MOVE]
 
     def start_trace_covering(self, tuple trace):
         """signal that now the given trace starts to get covered"""

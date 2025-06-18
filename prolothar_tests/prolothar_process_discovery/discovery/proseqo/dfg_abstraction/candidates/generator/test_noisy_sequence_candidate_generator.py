@@ -54,7 +54,7 @@ class TestNoisySequenceCandidateGenerator(unittest.TestCase):
 
         dfg = PatternDfg.create_from_event_log(log)
         mdl_dfg = compute_mdl_score(log, dfg)
-        mdl_pattern = compute_mdl_score(log, dfg.fold([sequence_1_2]))
+        mdl_pattern = compute_mdl_score(log, dfg.fold({sequence_1_2}))
         self.assertLess(mdl_pattern, mdl_dfg)
 
     def test_generate_candidates_with_optional(self):

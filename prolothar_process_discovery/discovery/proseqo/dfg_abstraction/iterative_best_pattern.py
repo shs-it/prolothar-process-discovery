@@ -25,7 +25,7 @@ from prolothar_process_discovery.discovery.proseqo.structural_dfg_patterns.one_s
 from prolothar_process_discovery.discovery.proseqo.structural_dfg_patterns.one_step_optionals import find_one_step_optionals_in_dfg
 from prolothar_process_discovery.discovery.proseqo.pattern_dfg import PatternDfg
 from prolothar_process_discovery.discovery.proseqo.cover import Cover
-from prolothar_process_discovery.discovery.proseqo.mdl_score import compute_cover
+from prolothar_process_discovery.discovery.proseqo.greedy_cover import compute_cover
 from prolothar_process_discovery.discovery.proseqo.mdl_score import compute_mdl_score_given_cover
 from prolothar_process_discovery.discovery.proseqo.mdl_score import estimate_lower_bound_mdl_score
 
@@ -145,6 +145,7 @@ class IterativeBestPattern(DfgAbstractionStrategy):
         original_dfg = PatternDfg.create_from_event_log(log)
         folded_dfg = PatternDfg.create_from_dfg(dfg)
         activity_supports = log.compute_activity_supports()
+        activity_set = set(activity_supports.keys())
 
         self.__init_and_start_candidate_evaluation_workers(original_dfg, log)
 
@@ -155,7 +156,7 @@ class IterativeBestPattern(DfgAbstractionStrategy):
             candidate.apply_on_dfg(folded_dfg)
         nr_of_nodes_at_start = folded_dfg.get_nr_of_nodes()
         nr_of_edges_at_start = folded_dfg.get_nr_of_edges()
-        candidate_cover = compute_cover(log.traces, dfg)
+        candidate_cover = compute_cover(log.traces, dfg, activity_set=activity_set)
         candidate_mdl = compute_mdl_score_given_cover(candidate_cover, log,
                                                       folded_dfg)
         search_state = SearchState(
@@ -186,7 +187,7 @@ class IterativeBestPattern(DfgAbstractionStrategy):
                 search_state.remaining_candidates)
             self.__examine_current_candidate(
                 current_candidate, estimated_gain, original_dfg, log,
-                activity_supports, search_state, verbose)
+                activity_supports, activity_set, search_state, verbose)
             while not search_state.remaining_candidates:
                 if not self.__add_new_candidates(
                         original_dfg, log, self.__candidate_generator,
@@ -275,6 +276,7 @@ class IterativeBestPattern(DfgAbstractionStrategy):
             self, current_candidate: Candidate, estimated_gain: float,
             original_dfg: PatternDfg, log: EventLog,
             activity_supports: Dict[str, int],
+            activity_set: Set[str],
             search_state: SearchState, verbose: bool) -> Tuple[PatternDfg, float]:
         search_state.nr_of_remaining_candidates_per_type[
                 type(current_candidate).__name__] -= 1
@@ -282,7 +284,7 @@ class IterativeBestPattern(DfgAbstractionStrategy):
         candidate_dfg, candidate_set = apply_candidate(
                 original_dfg, search_state.selected_candidates, current_candidate)
         self.__prune_start_end_nodes(candidate_dfg, original_dfg)
-        candidate_cover = compute_cover(log.traces, candidate_dfg)
+        candidate_cover = compute_cover(log.traces, candidate_dfg, activity_set=activity_set)
         candidate_mdl = compute_mdl_score_given_cover(candidate_cover, log,
                                                       candidate_dfg)
         if candidate_mdl < search_state.current_mdl:

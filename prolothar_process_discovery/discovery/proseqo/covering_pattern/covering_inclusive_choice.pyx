@@ -14,10 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with Prolothar-Process-Discovery. If not, see <https://www.gnu.org/licenses/>.
 '''
+from prolothar_common.models.eventlog.trace cimport Trace
 from prolothar_process_discovery.discovery.proseqo.pattern.pattern import Pattern
 from prolothar_process_discovery.discovery.proseqo.covering_pattern.covering_pattern cimport CoveringPattern
-
-from typing import Set
+from prolothar_process_discovery.discovery.proseqo.cover cimport Cover
 
 cdef class CoveringInclusiveChoice(CoveringPattern):
 
@@ -28,7 +28,7 @@ cdef class CoveringInclusiveChoice(CoveringPattern):
                 for option in choice.options]
         self.current_subpattern_covering = None
 
-    cpdef process_covering_step(self, object cover, str last_activity, str next_activity):
+    cpdef process_covering_step(self, Cover cover, str last_activity, str next_activity):
         cdef CoveringPattern other_covering_option
         if not self.started_covering:
             self.started_covering = True
@@ -81,12 +81,12 @@ cdef class CoveringInclusiveChoice(CoveringPattern):
        """adds a routing code to the current covering subpattern"""
        cover.meta_stream.add_routing_code(
             self.pattern,
-            self.current_subpattern_covering.pattern.get_activity_name(),
+            self.current_subpattern_covering.pattern,
             frozenset(c.pattern.get_activity_name()
                       for c in self.covering_options),
             last_activity)
 
-    cpdef int skip_to_end(self, object cover, object trace, str last_covered_activity):
+    cpdef int skip_to_end(self, Cover cover, Trace trace, str last_covered_activity):
         if not self.completed_covering:
             self.completed_covering = True
             if self.current_subpattern_covering is not None:

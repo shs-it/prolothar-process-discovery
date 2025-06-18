@@ -82,7 +82,7 @@ class TestClosedCommunities(unittest.TestCase):
                 [c.pattern_dfg for c in found_communities])
 
         pattern_dfg = PatternDfg.create_from_dfg(dfg)
-        folden_pattern_dfg = pattern_dfg.fold([community_1, community_2])
+        folden_pattern_dfg = pattern_dfg.fold({community_1, community_2])
 
         for edge in dfg.edges.values():
             edge.count = 0

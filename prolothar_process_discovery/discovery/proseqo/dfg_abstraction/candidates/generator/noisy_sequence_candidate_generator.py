@@ -139,7 +139,7 @@ class NoisySequenceCandidateGenerator(PatternCandidateGenerator):
                                 [Singleton('__seqtempend__')]
         sequence.clear_cache()
 
-        lowest_mdl = compute_mdl_score(sublog, subdfg.fold([sequence]))
+        lowest_mdl = compute_mdl_score(sublog, subdfg.fold({sequence}))
         changed = True
         while changed:
             changed = False
@@ -149,8 +149,8 @@ class NoisySequenceCandidateGenerator(PatternCandidateGenerator):
                 sequence_with_optional_i.pattern_list[i] = Optional(
                         sequence_with_optional_i.pattern_list[i])
                 sequence_with_optional_i.clear_cache()
-                candidate_mdl = compute_mdl_score(sublog, subdfg.fold([
-                        sequence_with_optional_i]))
+                candidate_mdl = compute_mdl_score(sublog, subdfg.fold({
+                        sequence_with_optional_i}))
                 if candidate_mdl < lowest_mdl:
                     lowest_mdl = candidate_mdl
                     sequence = sequence_with_optional_i
