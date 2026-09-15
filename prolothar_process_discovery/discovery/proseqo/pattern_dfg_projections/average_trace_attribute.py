@@ -49,10 +49,6 @@ class AverageTraceAttribute(AbstractNumericProjection):
                 for event in trace.events:
                     self.__activity_statistics_dict[event.activity_name].push(
                         attribute_value)
-        self.__attribute = trace_attribute
-
-    def get_attribute(self) -> str:
-        return self.__attribute
 
     def _compute_node_value_dict(self, pattern_dfg: PatternDfg):
         node_value_dict = {}

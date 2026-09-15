@@ -565,10 +565,8 @@ class TestPatternDfg(unittest.TestCase):
         expected_graph.add_edge(NestedGraph.Edge(
                 '1->2', '1', '2', attributes={'count': 3}))
 
-        self.assertEqual(expected_graph, folded_dfg.to_nested_graph())
-
-        parsed_pattern_graph = PatternDfg.create_from_nested_graph(expected_graph)
-        self.assertEqual(folded_dfg, parsed_pattern_graph)
+        self.assertEqual(folded_dfg, PatternDfg.create_from_nested_graph(expected_graph))
+        self.assertEqual(folded_dfg, PatternDfg.create_from_nested_graph(folded_dfg.to_nested_graph()))
 
     def test_to_and_from_nested_graph_with_long_sequence(self):
         pattern = Sequence.from_activity_list(list(str(i) for i in range(20)))

@@ -49,7 +49,7 @@ cpdef float compute_encoded_length_of_pattern_dfg(PatternDfg pattern_dfg, frozen
     #this only happens in rare cases when the model is known and contains
     #activities that are not present in the sample log
     if len(model_activity_set) > len(activity_set):
-        activity_set = model_activity_set
+        activity_set = frozenset(model_activity_set)
     #number of activities
     cdef float encoded_length = mdl_utils.L_N(len(activity_set))
 

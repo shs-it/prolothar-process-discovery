@@ -47,9 +47,6 @@ class AbstractNumericProjection(ABC):
     def get_max_value(self) -> float:
         return self.__max_value
 
-    def get_attribute(self) -> str:
-        return self.__attribute
-
     def project(self, pattern_dfg: PatternDfg):
         """
         sets color and font color of the nodes
